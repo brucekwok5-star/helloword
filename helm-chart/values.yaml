@@ -8,8 +8,8 @@ app:
   port: 8080
 
 image:
-  repository: helloworld
-  tag: 1.0.0
+  repository: ghcr.io/brucekwok5-star/helloword
+  tag: latest
   pullPolicy: IfNotPresent
 
 replicas: 1
