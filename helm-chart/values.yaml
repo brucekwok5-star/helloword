@@ -37,3 +37,22 @@ resources:
   limits:
     memory: "512Mi"
     cpu: "500m"
+
+# Stable deployment (used when canary is enabled)
+stable:
+  enabled: false
+  replicas: 1
+
+# Canary deployment
+canary:
+  enabled: false
+  replicas: 1
+
+# Traffic configuration
+traffic:
+  canaryPercentage: 10
+
+# Ingress configuration
+ingress:
+  enabled: false
+  host: helloworld.local

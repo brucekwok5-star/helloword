@@ -1,0 +1,57 @@
+{{- if .Values.canary.enabled }}
+# Main service - routes to both stable and canary
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.app.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+    environment: {{ .Values.environment }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ .Values.app.name }}
+  ports:
+  - port: {{ .Values.service.port }}
+    targetPort: {{ .Values.app.port }}
+    name: http
+---
+# Stable-only service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.app.name }}-stable
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+    role: stable
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.app.name }}
+    version: stable
+  ports:
+  - port: {{ .Values.service.port }}
+    targetPort: {{ .Values.app.port }}
+    name: http
+---
+# Canary-only service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.app.name }}-canary
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+    role: canary
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.app.name }}
+    version: canary
+  ports:
+  - port: {{ .Values.service.port }}
+    targetPort: {{ .Values.app.port }}
+    name: http
+{{- end }}
