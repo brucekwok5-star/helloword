@@ -1,0 +1,58 @@
+# Prometheus and Grafana values
+
+namespaceOverride: monitoring
+
+prometheus:
+  prometheusSpec:
+    retention: 15d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: standard
+          resources:
+            requests:
+              storage: 10Gi
+
+    # Enable scraping of kubelet
+    kubeletService:
+      enabled: true
+
+  # Expose Prometheus via NodePort
+  service:
+    type: NodePort
+    nodePort: 30900
+
+grafana:
+  # Expose Grafana via NodePort
+  service:
+    type: NodePort
+    nodePort: 30300
+
+  adminPassword: admin
+
+  # Add datasources
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          url: http://prometheus-server.monitoring.svc:9090
+          access: proxy
+          isDefault: true
+
+  # Add dashboards
+  dashboards:
+    default:
+      kubernetes-cluster:
+        gnetId: 15757
+        revision: 1
+        datasource: Prometheus
+      kubernetes-pods:
+        gnetId: 15853
+        revision: 1
+        datasource: Prometheus
+
+# Alertmanager (disabled for simplicity)
+alertmanager:
+  enabled: false
