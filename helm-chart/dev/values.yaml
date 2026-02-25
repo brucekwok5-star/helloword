@@ -1,5 +1,6 @@
 # Development environment
 
+namespace: dev
 environment: dev
 
 replicas: 1

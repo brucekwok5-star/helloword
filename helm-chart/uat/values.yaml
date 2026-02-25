@@ -1,5 +1,6 @@
 # UAT environment
 
+namespace: uat
 environment: uat
 
 replicas: 2
