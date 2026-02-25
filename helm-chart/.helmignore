@@ -1,0 +1,7 @@
+# Helm ignore patterns
+*.tar.gz
+*.tgz
+.DS_Store
+.git/
+.gitignore
+*.md

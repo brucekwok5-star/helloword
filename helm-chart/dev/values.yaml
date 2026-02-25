@@ -1,0 +1,20 @@
+# Development environment
+
+environment: dev
+
+replicas: 1
+
+image:
+  tag: 1.0.0
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "100m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+service:
+  type: NodePort
+  nodePort: 30080

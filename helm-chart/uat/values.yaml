@@ -1,0 +1,19 @@
+# UAT environment
+
+environment: uat
+
+replicas: 2
+
+image:
+  tag: 1.0.0
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "200m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"
+
+service:
+  type: LoadBalancer
