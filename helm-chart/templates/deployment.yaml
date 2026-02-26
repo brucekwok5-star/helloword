@@ -16,6 +16,12 @@ spec:
       labels:
         app: {{ .Values.app.name }}
         environment: {{ .Values.environment }}
+      {{- if .Values.podAnnotations }}
+      annotations:
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+      {{- end }}
     spec:
       imagePullSecrets:
       - name: ghcr-secret

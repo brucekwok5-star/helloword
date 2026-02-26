@@ -7,7 +7,12 @@ replicas: 1
 
 image:
   repository: ghcr.io/brucekwok5-star/helloword
-  tag: latest
+  tag: 98008b1
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8080"
+  prometheus.io/path: "/actuator/prometheus"
 
 resources:
   requests:
