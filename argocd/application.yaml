@@ -19,7 +19,7 @@ spec:
         - name: image.repository
           value: ghcr.io/brucekwok5-star/helloword
         - name: image.tag
-          value: latest
+          value: $IMAGE_TAG
   destination:
     server: https://kubernetes.default.svc
     namespace: prod
