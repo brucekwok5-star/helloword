@@ -62,10 +62,11 @@ jobs:
         run: |
           # Extract just the sha tag (e.g., "abc1234" from "ghcr.io/owner/repo:abc1234")
           IMAGE_TAG=$(echo "${{ steps.meta.outputs.tags }}" | tr ',' '\n' | grep -oP '(?<=:)[a-f0-9]+$' | head -1)
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
           echo "Updating image tag to: $IMAGE_TAG"
 
-          # Update ONLY the image.tag line in ArgoCD application file
-          sed -i '/name: image.tag/,/value:/s/value:.*/value: $IMAGE_TAG/' argocd/application.yaml
+          # Update ONLY the image.tag line in ArgoCD application file using env variable
+          sed -i "s/value:.*$/value: $IMAGE_TAG/" argocd/application.yaml
 
           # Show the change
           cat argocd/application.yaml | grep -A2 "image.tag"
