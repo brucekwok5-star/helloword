@@ -13,7 +13,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -53,3 +53,27 @@ jobs:
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Extract short SHA
+        id: sha
+        run: echo "SHORT_SHA=${GITHUB_SHA:0:7}" >> $GITHUB_OUTPUT
+
+      - name: Update ArgoCD image tag
+        run: |
+          # Extract just the sha tag (e.g., "abc1234" from "ghcr.io/owner/repo:abc1234")
+          IMAGE_TAG=$(echo "${{ steps.meta.outputs.tags }}" | tr ',' '\n' | grep -oP '(?<=:)[a-f0-9]+$' | head -1)
+          echo "Updating image tag to: $IMAGE_TAG"
+
+          # Update the ArgoCD application file
+          sed -i "s/value:.*$/value: $IMAGE_TAG/" argocd/application.yaml
+
+          # Show the change
+          cat argocd/application.yaml | grep -A2 "image.tag"
+
+      - name: Commit and push ArgoCD update
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add argocd/application.yaml
+          git commit -m "Update image tag for ArgoCD deployment" || echo "No changes to commit"
+          git push
