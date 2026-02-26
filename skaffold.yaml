@@ -1,0 +1,42 @@
+apiVersion: skaffold/v4beta10
+kind: Config
+metadata:
+  name: helloworld
+
+build:
+  artifacts:
+    - image: ghcr.io/brucekwok5-star/helloword
+      jib:
+        args:
+          - -DskipTests
+
+deploy:
+  kubectl:
+    manifests:
+      - helm-chart/templates/*.yaml
+      - helm-chart/values.yaml
+
+profiles:
+  - name: dev
+    activation:
+      - env: ENV=dev
+    build:
+      artifacts:
+        - image: ghcr.io/brucekwok5-star/helloword
+          jib:
+            args:
+              - -DskipTests
+    deploy:
+      kubectl:
+        manifests:
+          - helm-chart/templates/*.yaml
+          - helm-chart/values.yaml
+
+  - name: prod
+    activation:
+      - env: ENV=prod
+    deploy:
+      kubectl:
+        manifests:
+          - helm-chart/templates/*.yaml
+          - helm-chart/prod/values.yaml

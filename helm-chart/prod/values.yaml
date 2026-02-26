@@ -41,3 +41,7 @@ readinessProbe:
 podDisruptionBudget:
   enabled: true
   minAvailable: 1
+
+# Network policy for production
+networkPolicy:
+  enabled: true

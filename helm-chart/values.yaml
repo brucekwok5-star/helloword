@@ -56,3 +56,7 @@ traffic:
 ingress:
   enabled: false
   host: helloworld.local
+
+# Network policy configuration
+networkPolicy:
+  enabled: false

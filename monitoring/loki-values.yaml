@@ -1,0 +1,18 @@
+loki:
+  enabled: true
+  useTestSchema: true
+  deploymentMode: SingleBinary
+  commonConfig:
+    replication_factor: 1
+  auth_enabled: false
+  persistence:
+    enabled: true
+    size: 5Gi
+
+promtail:
+  enabled: true
+  pipelineStages:
+    - docker: {}
+
+grafana:
+  enabled: false

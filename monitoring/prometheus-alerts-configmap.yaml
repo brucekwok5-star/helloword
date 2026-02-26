@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-alerts
+  namespace: monitoring
+  labels:
+    app: prometheus
+data:
+  helloworld-alerts.yaml: |
+    groups:
+      - name: helloworld-alerts
+        interval: 30s
+        rules:
+          - alert: HelloworldDown
+            expr: up{app="helloworld", namespace="prod"} == 0
+            for: 1m
+            labels:
+              severity: critical
+              app: helloworld
+            annotations:
+              summary: "Helloworld application is down"
+              description: "Helloworld in {{ $labels.namespace }} namespace has been down for more than 1 minute"
+
+          - alert: HelloworldHighMemoryUsage
+            expr: (jvm_memory_used_bytes{app="helloworld", namespace="prod", area="heap"} / jvm_memory_max_bytes{app="helloworld", namespace="prod", area="heap"}) > 0.85
+            for: 5m
+            labels:
+              severity: warning
+              app: helloworld
+            annotations:
+              summary: "Helloworld high memory usage"
+              description: "Helloworld heap memory usage is above 85% for more than 5 minutes"
+
+          - alert: HelloworldHighCpuUsage
+            expr: process_cpu_usage{app="helloworld", namespace="prod"} > 0.8
+            for: 5m
+            labels:
+              severity: warning
+              app: helloworld
+            annotations:
+              summary: "Helloworld high CPU usage"
+              description: "Helloworld CPU usage is above 80% for more than 5 minutes"
+
+          - alert: HelloworldPodRestartingTooMuch
+            expr: increase(kube_pod_container_status_restarts_total{app="helloworld", namespace="prod"}[1h]) > 3
+            for: 5m
+            labels:
+              severity: warning
+              app: helloworld
+            annotations:
+              summary: "Helloworld pod restarting too much"
+              description: "Helloworld pod has restarted more than 3 times in the last hour"
+
+          - alert: HelloworldNotReady
+            expr: kube_pod_status_ready{app="helloworld", namespace="prod", condition="true"} == 0
+            for: 3m
+            labels:
+              severity: warning
+              app: helloworld
+            annotations:
+              summary: "Helloworld pod not ready"
+              description: "Helloworld pod in {{ $labels.namespace }} has not been ready for more than 3 minutes"
