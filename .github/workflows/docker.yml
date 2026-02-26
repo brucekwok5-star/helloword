@@ -64,8 +64,8 @@ jobs:
           IMAGE_TAG=$(echo "${{ steps.meta.outputs.tags }}" | tr ',' '\n' | grep -oP '(?<=:)[a-f0-9]+$' | head -1)
           echo "Updating image tag to: $IMAGE_TAG"
 
-          # Update the ArgoCD application file
-          sed -i "s/value:.*$/value: $IMAGE_TAG/" argocd/application.yaml
+          # Update ONLY the image.tag line in ArgoCD application file
+          sed -i '/name: image.tag/,/value:/s/value:.*/value: $IMAGE_TAG/' argocd/application.yaml
 
           # Show the change
           cat argocd/application.yaml | grep -A2 "image.tag"
