@@ -53,3 +53,15 @@ spec:
           limits:
             memory: {{ .Values.resources.limits.memory }}
             cpu: {{ .Values.resources.limits.cpu }}
+        {{- if .Values.tls.enabled }}
+        volumeMounts:
+        - name: tls
+          mountPath: /etc/tls
+          readOnly: true
+        {{- end }}
+      {{- if .Values.tls.enabled }}
+      volumes:
+      - name: tls
+        secret:
+          secretName: {{ .Values.tls.secretName }}
+      {{- end }}
