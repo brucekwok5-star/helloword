@@ -1,7 +1,73 @@
+# Default values for helloworld
+
+namespace: default
+environment: dev
+
+app:
+  name: helloworld
+  port: 8080
+
+image:
+  repository: ghcr.io/brucekwok5-star/helloword
+  tag: latest
+  pullPolicy: IfNotPresent
+
+replicas: 1
+
+service:
+  type: NodePort
+  port: 80
+
+livenessProbe:
+  enabled: true
+  path: /actuator/health
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+readinessProbe:
+  enabled: true
+  path: /actuator/health
+  initialDelaySeconds: 10
+  periodSeconds: 5
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "50m"
+  limits:
+    memory: "256Mi"
+    cpu: "250m"
+
+# Stable deployment (used when canary is enabled)
+stable:
+  enabled: false
+  replicas: 1
+
+# Canary deployment
+canary:
+  enabled: false
+  replicas: 1
+
+# Traffic configuration
+traffic:
+  canaryPercentage: 10
+
+# Ingress configuration
+ingress:
+  enabled: false
+  host: helloworld.local
+
+# Network policy configuration
+networkPolicy:
+  enabled: false
+
 # TLS Configuration
-# Note: Requires actual certificates to be mounted as secrets
 tls:
   enabled: false
   secretName: helloworld-tls
   certFile: /etc/tls/tls.crt
   keyFile: /etc/tls/tls.key
+
+# Helm tests
+tests:
+  enabled: true
