@@ -17,9 +17,9 @@ spec:
         - prod/values.yaml
       parameters:
         - name: image.repository
-          value: ghcr.io/brucekwok5-star/helloword
+          value: 471ad41
         - name: image.tag
-          value: $IMAGE_TAG
+          value: 471ad41
   destination:
     server: https://kubernetes.default.svc
     namespace: prod
