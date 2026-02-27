@@ -46,6 +46,10 @@ spec:
               mountPath: /var/lib/mysql
             - name: mysql-config
               mountPath: /etc/mysql/conf.d
+          volumes:
+            - name: mysql-config
+              configMap:
+                name: mysql-config
           resources:
             requests:
               memory: {{ .Values.mysql.resources.requests.memory }}
