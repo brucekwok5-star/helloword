@@ -45,3 +45,8 @@ podDisruptionBudget:
 # Network policy for production
 networkPolicy:
   enabled: false
+
+# MySQL configuration
+mysql:
+  enabled: true
+  password: root123

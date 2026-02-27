@@ -30,6 +30,22 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
         - containerPort: {{ .Values.app.port }}
+        {{- if .Values.mysql.enabled }}
+        env:
+          - name: DB_HOST
+            value: {{ .Values.mysql.name }}
+          - name: DB_PORT
+            value: "3306"
+          - name: DB_NAME
+            value: {{ .Values.mysql.database }}
+          - name: DB_USERNAME
+            value: root
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: password
+        {{- end }}
         {{- if .Values.livenessProbe.enabled }}
         livenessProbe:
           httpGet:
