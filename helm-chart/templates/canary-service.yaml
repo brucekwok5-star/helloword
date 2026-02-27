@@ -4,7 +4,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.app.name }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "prod" }}
   labels:
     app: {{ .Values.app.name }}
     environment: {{ .Values.environment }}
@@ -22,7 +22,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.app.name }}-stable
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "prod" }}
   labels:
     app: {{ .Values.app.name }}
     role: stable
@@ -41,7 +41,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.app.name }}-canary
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "prod" }}
   labels:
     app: {{ .Values.app.name }}
     role: canary

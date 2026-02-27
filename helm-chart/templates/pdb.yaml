@@ -3,9 +3,9 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: {{ .Values.app.name }}-pdb
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "prod" }}
 spec:
-  minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
+  minAvailable: {{ .Values.podDisruptionBudget.minAvailable | default 1 }}
   selector:
     matchLabels:
       app: {{ .Values.app.name }}

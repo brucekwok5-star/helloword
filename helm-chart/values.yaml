@@ -68,6 +68,11 @@ tls:
   certFile: /etc/tls/tls.crt
   keyFile: /etc/tls/tls.key
 
+# PodDisruptionBudget
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+
 # Helm tests
 tests:
   enabled: true

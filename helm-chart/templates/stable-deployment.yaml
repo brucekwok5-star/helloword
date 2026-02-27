@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.stable.name | default (printf "%s-stable" .Values.app.name) }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "prod" }}
   labels:
     app: {{ .Values.app.name }}
     version: stable

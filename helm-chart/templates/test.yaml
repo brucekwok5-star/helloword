@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: "{{ .Values.app.name }}-test-connection"
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.namespace | default "prod" }}
   annotations:
     "helm.sh/hook": test
     "helm.sh/hook-delete-policy": hook-succeeded
