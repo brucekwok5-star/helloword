@@ -15,11 +15,6 @@ spec:
       valueFiles:
         - values.yaml
         - prod/values.yaml
-      parameters:
-        - name: image.repository
-          value: 471ad41
-        - name: image.tag
-          value: 471ad41
   destination:
     server: https://kubernetes.default.svc
     namespace: prod

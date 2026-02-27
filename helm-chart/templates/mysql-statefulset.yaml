@@ -22,7 +22,7 @@ spec:
         - name: init-mysql
           image: busybox:1.36
           command:
-            - bash
+            - sh
             - "-c"
             - |
               set -ex
