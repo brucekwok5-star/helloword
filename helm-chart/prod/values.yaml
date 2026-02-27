@@ -44,4 +44,4 @@ podDisruptionBudget:
 
 # Network policy for production
 networkPolicy:
-  enabled: true
+  enabled: false
