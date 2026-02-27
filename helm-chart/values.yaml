@@ -71,3 +71,18 @@ tls:
 # Helm tests
 tests:
   enabled: true
+
+# MySQL configuration
+mysql:
+  enabled: false
+  name: mysql
+  database: helloworld
+  persistence:
+    size: 1Gi
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
