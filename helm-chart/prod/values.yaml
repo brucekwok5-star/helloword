@@ -7,7 +7,7 @@ replicas: 2
 
 image:
   repository: ghcr.io/brucekwok5-star/helloword
-  tag: 98008b1
+  tag: 98008b2
 
 podAnnotations:
   prometheus.io/scrape: "true"

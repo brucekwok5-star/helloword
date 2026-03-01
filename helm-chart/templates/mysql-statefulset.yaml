@@ -1,91 +1,70 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Values.mysql.name }}
-  namespace: {{ .Values.namespace | default "prod" }}
+  name: mysql
+  namespace: prod
 spec:
-  serviceName: {{ .Values.mysql.name }}
+  serviceName: mysql
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.mysql.name }}
+      app: mysql
   template:
     metadata:
       labels:
-        app: {{ .Values.mysql.name }}
+        app: mysql
     spec:
-      volumes:
-        - name: mysql-config
-          configMap:
-            name: mysql-config
-      initContainers:
-        - name: init-mysql
-          image: busybox:1.36
-          command:
-            - sh
-            - "-c"
-            - |
-              set -ex
-              [[ $(hostname) == mysql-0 ]] && NAMESPACE=${NAMESPACE:-default} || exit 0
-              echo "Initializing MySQL..."
-          volumeMounts:
-            - name: mysql-data
-              mountPath: /var/lib/mysql
       containers:
-        - name: mysql
-          image: mysql:8.0
-          ports:
-            - containerPort: 3306
-              name: mysql
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: password
-            - name: MYSQL_DATABASE
-              value: {{ .Values.mysql.database }}
-          volumeMounts:
-            - name: mysql-data
-              mountPath: /var/lib/mysql
-            - name: mysql-config
-              mountPath: /etc/mysql/conf.d
-          resources:
-            requests:
-              memory: {{ .Values.mysql.resources.requests.memory }}
-              cpu: {{ .Values.mysql.resources.requests.cpu }}
-            limits:
-              memory: {{ .Values.mysql.resources.limits.memory }}
-              cpu: {{ .Values.mysql.resources.limits.cpu }}
-          livenessProbe:
-            exec:
-              command:
-                - mysqladmin
-                - ping
-                - -h
-                - localhost
-                - -u
-                - root
-                - -p$MYSQL_ROOT_PASSWORD
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            exec:
-              command:
-                - mysqladmin
-                - ping
-                - -h
-                - localhost
-                - -u
-                - root
-                - -p$MYSQL_ROOT_PASSWORD
-            initialDelaySeconds: 20
-            periodSeconds: 5
-  volumeClaimTemplates:
-    - metadata:
-        name: mysql-data
-      spec:
-        accessModes: ["ReadWriteOnce"]
+      - name: mysql
+        image: mysql:8.0
+        args: ["--innodb-buffer-pool-size=32M", "--max-connections=50"]
+        ports:
+        - containerPort: 3306
+          name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root123
+        - name: MYSQL_DATABASE
+          value: helloworld
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
         resources:
           requests:
-            storage: {{ .Values.mysql.persistence.size }}
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "384Mi"
+            cpu: "200m"
+        livenessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+            - -h
+            - localhost
+            - -u
+            - root
+            - -proot123
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+            - -h
+            - localhost
+            - -u
+            - root
+            - -proot123
+          initialDelaySeconds: 20
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
