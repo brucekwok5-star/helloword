@@ -5,7 +5,7 @@ metadata:
 
 build:
   artifacts:
-    - image: ghcr.io/brucekwok5-star/helloword
+    - image: ghcr.io/brucekwok5-star/helloworld
       jib:
         args:
           - -DskipTests
@@ -22,7 +22,7 @@ profiles:
       - env: ENV=dev
     build:
       artifacts:
-        - image: ghcr.io/brucekwok5-star/helloword
+        - image: ghcr.io/brucekwok5-star/helloworld
           jib:
             args:
               - -DskipTests

@@ -6,7 +6,7 @@ environment: prod
 replicas: 2
 
 image:
-  repository: ghcr.io/brucekwok5-star/helloword
+  repository: ghcr.io/brucekwok5-star/helloworld
   tag: 98008b2
 
 podAnnotations:

@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/brucekwok5-star/helloword.git
+    repoURL: https://github.com/brucekwok5-star/helloworld.git
     targetRevision: main
     path: helm-chart
     helm:

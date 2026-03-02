@@ -57,7 +57,7 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 
 # Install application
 argocd app create helloworld-prod \
-  --repo https://github.com/brucekwok5-star/helloword.git \
+  --repo https://github.com/brucekwok5-star/helloworld.git \
   --path helm-chart \
   --dest-server https://kubernetes.default.svc \
   --dest-namespace prod \

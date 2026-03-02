@@ -8,7 +8,7 @@ app:
   port: 8080
 
 image:
-  repository: ghcr.io/brucekwok5-star/helloword
+  repository: ghcr.io/brucekwok5-star/helloworld
   tag: latest
   pullPolicy: IfNotPresent
 
